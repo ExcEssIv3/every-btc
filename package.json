@@ -7,8 +7,9 @@
     "predev": "rimraf .parcel-cache dist",
     "dev": "parcel public/index.html",
     "prebuild": "rimraf .parcel-cache dist",
-    "build": "parcel build public/index.html",
-    "new-component": "new-component"
+    "build": "parcel build public/index.html --public-url /every-btc/",
+    "new-component": "new-component",
+    "deploy": "npm run build && gh-pages -d dist"
   },
   "keywords": [],
   "author": "nolen (eieio)",
@@ -30,6 +31,7 @@
   },
   "browserslist": ">0.3%, defaults, supports es6-module",
   "devDependencies": {
+    "gh-pages": "^6.3.0",
     "process": "^0.11.10"
   }
 }
