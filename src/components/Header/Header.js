@@ -1,14 +1,17 @@
 import React from "react";
 import styled from "styled-components";
 import {
-  WIDTH_TO_SHOW_DOUBLE_HEIGHT,
   querySmallScreen,
 } from "../../../lib/constants";
 import { Code, Twitter, Bsky, Help } from "../Icons/Icons";
+import UnstyledButton from "../UnstyledButton/UnstyledButton";
+
 const SUBHEADS = [
-  "In case you forgot one",
-  "Scroll till you find a good one",
-  "Well, only the V4 ones",
+  "Every private key. Every address. Zero guarantees.",
+  "Scroll till you find a funded one",
+  "2^256 keys. You've got time.",
+  "Not financial advice",
+  "The private key to your freedom... is probably here",
 ];
 
 const Wrapper = styled.header`
@@ -77,6 +80,29 @@ const SelfPromotion = styled.div`
   }
 `;
 
+const AddressTypeToggle = styled.div`
+  display: flex;
+  flex-direction: row;
+  font-family: monospace;
+  font-size: 0.75rem;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  overflow: hidden;
+`;
+
+const ToggleButton = styled(UnstyledButton)`
+  padding: 0.2rem 0.5rem;
+  cursor: pointer;
+  background-color: ${(props) => props.$active ? 'var(--slate-600)' : 'transparent'};
+  color: ${(props) => props.$active ? 'var(--slate-50)' : 'inherit'};
+  transition: background-color 0.1s ease-in-out, color 0.1s ease-in-out;
+  @media (hover: hover) {
+    &:hover {
+      background-color: ${(props) => props.$active ? 'var(--slate-600)' : 'var(--slate-300)'};
+    }
+  }
+`;
+
 const TitleLink = styled.a`
   text-decoration: none;
   color: inherit;
@@ -109,17 +135,9 @@ const Socials = styled.div`
   gap: 0.5rem;
   justify-content: flex-end;
   align-items: center;
-
-  @media (max-width: ${WIDTH_TO_SHOW_DOUBLE_HEIGHT}px) {
-    transform: translateY(-1px);
-  }
 `;
 
-const V4Small = styled.sup`
-  font-size: 0.75rem;
-`;
-
-function Header() {
+function Header({ addressType, setAddressType }) {
   const subhead = React.useMemo(() => {
     return SUBHEADS[Math.floor(Math.random() * SUBHEADS.length)];
   }, []);
@@ -128,15 +146,20 @@ function Header() {
     <Wrapper>
       <TitleSubhead>
         <TitleLink href="/">
-          <Title>Every UUID Dot Com</Title>
+          <Title>Every Bitcoin Private Key</Title>
         </TitleLink>
         <Subhead>{subhead}</Subhead>
       </TitleSubhead>
+      <AddressTypeToggle>
+        <ToggleButton $active={addressType === 'p2pkh'} onClick={() => setAddressType('p2pkh')}>
+          P2PKH (1...)
+        </ToggleButton>
+        <ToggleButton $active={addressType === 'p2wpkh'} onClick={() => setAddressType('p2wpkh')}>
+          P2WPKH (bc1q...)
+        </ToggleButton>
+      </AddressTypeToggle>
       <SelfPromotion>
         <Socials>
-          <SocialLink href="https://eieio.games/blog/writing-down-every-uuid">
-            <Help />
-          </SocialLink>
           <SocialLink href="https://github.com/nolenroyalty/every-uuid">
             <Code />
           </SocialLink>
